@@ -1,20 +1,189 @@
-// bstTree.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+class Node
+{
+public:
+	Node* left;
+	Node* right;
+	int val;
+};
+
+
+class BstTree
+{
+public:
+	Node* root;
+	BstTree()
+	{
+		root = NULL;
+	};
+	void inOrderSeq();
+	void postOrderSeq();
+	void preOrderSeq();
+	int bstInsert(int _val); // inserts _val to bstTree; returns 1 is _val is added (which may happen only when _val is not in bstTree) and 0 otherwise
+	int bstSearch(int _val); // returns 1 if _val is in the bstTree and 0 otherwise
+	~BstTree();
+private:
+	void inOrder(Node*);
+	void postOrder(Node*);
+	void preOrder(Node*);
+	void deleteNode(Node*);
+};
+
+BstTree::~BstTree()
+{
+	deleteNode(root);
+}
+
+void BstTree::deleteNode(Node* curr)
+{
+	if (curr != NULL)
+	{
+		deleteNode(curr->left);
+		deleteNode(curr->right);
+		//cout << "Usuwanie noda z kluczem:" << curr ->val << "\n" ;
+		delete curr;
+	}
+}
+
+int BstTree::bstInsert(int _val)
+{
+	
+		
+	Node* curr = root;
+	int right = 0;
+	if (root == NULL) {
+		root = new Node();
+		root->val = _val;
+		return 1;
+	}
+	while (true) {
+		if (_val == curr->val) { return 0; }
+		if (_val > curr->val) {
+			if (curr->right == NULL) { break; }
+			curr = curr->right;
+			right = 1;
+		}
+		else if (_val < curr->val)
+		{
+			if (curr->left == NULL) { break; }
+			curr = curr->left;
+			right = 0;
+		}
+	}
+
+
+
+	Node* newNode = new Node();
+	newNode->val = _val;
+	right ? curr->right = newNode : curr->left = newNode;
+
+
+	return 1;
+}
+
+
+int BstTree::bstSearch(int _val)
+{
+	Node* curr = root;
+	if (root == NULL) { return 0; }
+
+	while (true) {
+		if (_val == curr->val) { return 1; }
+
+		if (_val > curr->val) {
+			if (curr->right == NULL) { break; }
+			curr = curr->right;
+		}
+		else if (_val < curr->val)
+		{
+			if (curr->left == NULL) { break; }
+			curr = curr->left;
+		}
+		
+	}
+	return 0;
+}
+
+
+
+void BstTree::preOrderSeq()
+{
+	preOrder(root);
+}
+
+void BstTree::preOrder(Node* curr)
+{
+	/* write all the necessary code here */
+}
+
+void BstTree::inOrderSeq()
+{
+	inOrder(root);
+}
+
+void BstTree::inOrder(Node* curr)
+{
+	/* write all the necessary code here */
+}
+
+void BstTree::postOrderSeq()
+{
+	postOrder(root);
+}
+
+void BstTree::postOrder(Node* curr)
+{
+	/* write all the necessary code here */
+}
+
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	int z, n;
+	string zstr, nstr;
+	getline(cin, zstr);
+	istringstream(zstr) >> z;
+	while (z)
+	{
+		getline(cin, nstr);
+		istringstream(nstr) >> n;
+		BstTree bstTree = BstTree();
+		for (int i = 0; i < n; i++)
+		{
+			string line;
+			getline(cin, line);
+			string instr;
+			int num;
+			istringstream(line) >> instr >> num;
+			if (instr == "INSERT")
+				cout << bstTree.bstInsert(num) << "\n";
+			else if (instr == "SEARCH")
+				cout << bstTree.bstSearch(num) << "\n";
+			else if (instr == "PREORDER")
+			{
+				bstTree.preOrderSeq();
+				cout << "\n";
+			}
+			else if (instr == "INORDER")
+			{
+				bstTree.inOrderSeq();
+				cout << "\n";
+			}
+			else if (instr == "POSTORDER")
+			{
+				bstTree.postOrderSeq();
+				cout << "\n";
+			}
+		}
+		z--;
+	}
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+
+
