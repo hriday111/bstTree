@@ -134,10 +134,15 @@ void BstTree::inOrder(Node* curr)
 void BstTree::postOrderSeq()
 {
 	postOrder(root);
+	cout << " " << endl;
 }
 
 void BstTree::postOrder(Node* curr)
 {
+	if (curr == NULL) { return; }
+	postOrder(curr->left);
+	postOrder(curr->right);
+	cout << curr->val << " ";
 	/* write all the necessary code here */
 }
 
